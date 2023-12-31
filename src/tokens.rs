@@ -54,7 +54,7 @@ impl Display for Token {
             TokenType::Delimiter(delimiter) => {
                 write!(
                     f,
-                    "Delimiter {} found in line {} and block {}",
+                    "Delimiter \"{}\" found in line {} and block {}",
                     delimiter, self.line, self.block
                 )
             }
@@ -168,14 +168,14 @@ pub enum Delimiter {
 impl Display for Delimiter {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Delimiter::Comma => write!(f, "Comma"),
-            Delimiter::SemiColon => write!(f, "SemiColon"),
-            Delimiter::OpeningParenthesis => write!(f, "OpeningParenthesis"),
-            Delimiter::ClosingParenthesis => write!(f, "ClosingParenthesis"),
-            Delimiter::OpeningBracket => write!(f, "OpeningBracket"),
-            Delimiter::ClosingBracket => write!(f, "ClosingBracket"),
-            Delimiter::OpeningCurlyBracket => write!(f, "OpeningCurlyBracket"),
-            Delimiter::ClosingCurlyBracket => write!(f, "ClosingCurlyBracket"),
+            Delimiter::Comma => write!(f, ","),
+            Delimiter::SemiColon => write!(f, ";"),
+            Delimiter::OpeningParenthesis => write!(f, "("),
+            Delimiter::ClosingParenthesis => write!(f, ")"),
+            Delimiter::OpeningBracket => write!(f, "["),
+            Delimiter::ClosingBracket => write!(f, "]"),
+            Delimiter::OpeningCurlyBracket => write!(f, "{{"),
+            Delimiter::ClosingCurlyBracket => write!(f, "}}"),
         }
     }
 }
