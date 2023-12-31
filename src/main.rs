@@ -833,42 +833,42 @@ impl Display for Token {
             TokenType::Identifier(identifier) => {
                 write!(
                     f,
-                    "Identifier {} in line {} and block {}",
+                    "Identifier \"{}\" in line {} and block {}",
                     identifier, self.line, self.block
                 )
             }
             TokenType::Comment(comment) => {
                 write!(
                     f,
-                    "Comment {} starting from line {} and block {}",
+                    "Comment \"{}\" starting from line {} and block {}",
                     comment, self.line, self.block
                 )
             }
             TokenType::Operator(operator) => {
                 write!(
                     f,
-                    "Operator {} found in line {} and block {}",
+                    "Operator \"{}\" found in line {} and block {}",
                     operator, self.line, self.block
                 )
             }
             TokenType::Literal(literal) => {
                 write!(
                     f,
-                    "Literal {} found in line {} and block {}",
+                    "Literal \"{}\" found in line {} and block {}",
                     literal, self.line, self.block
                 )
             }
             TokenType::Keyword(keyword) => {
                 write!(
                     f,
-                    "keyword {} found in line {} and block {}",
+                    "keyword \"{}\" found in line {} and block {}",
                     keyword, self.line, self.block
                 )
             }
             TokenType::Number(number) => {
                 write!(
                     f,
-                    "Number {} found in line {} and block {}",
+                    "Number \"{}\" found in line {} and block {}",
                     number, self.line, self.block
                 )
             }
