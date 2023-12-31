@@ -206,6 +206,9 @@ fn main() -> ExitCode {
             continue;
         }
         if character.is_whitespace() {
+            if *character == '\n' {
+                line += 1;
+            }
             index += 1;
             block += 1;
             continue;
@@ -242,6 +245,7 @@ fn main() -> ExitCode {
         };
 
         if let Some(delimiter) = delimiter {
+            tokens.push(Token{line, block, token_type: TokenType::Delimiter(delimiter)});
             index += 1;
             block += 1;
             continue;
