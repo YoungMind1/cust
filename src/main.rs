@@ -208,9 +208,11 @@ fn main() -> ExitCode {
         if character.is_whitespace() {
             if *character == '\n' {
                 line += 1;
+                block = 0;
+            } else {
+                block += 1;
             }
             index += 1;
-            block += 1;
             continue;
         } else if character == &'/' && characters.get(index + 1).unwrap() == &'/' {
             index += 2;
@@ -245,7 +247,11 @@ fn main() -> ExitCode {
         };
 
         if let Some(delimiter) = delimiter {
-            tokens.push(Token{line, block, token_type: TokenType::Delimiter(delimiter)});
+            tokens.push(Token {
+                line,
+                block,
+                token_type: TokenType::Delimiter(delimiter),
+            });
             index += 1;
             block += 1;
             continue;
