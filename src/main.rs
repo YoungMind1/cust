@@ -125,6 +125,7 @@ fn main() -> ExitCode {
     let characters: Vec<char> = file.chars().collect();
     let mut index = 0;
     let identifer_regex = Regex::new(r"^([a-zA-Z_])(0-9a-zA-Z_)*").unwrap();
+    let number_regex = Regex::new(r"^(-|\+)?\d+(.\d+)?*").unwrap();
     while index + 1 != characters.len() {
         let character = characters.get(index).unwrap();
         if is_inside_linear_comments {
@@ -636,8 +637,21 @@ fn main() -> ExitCode {
             index += count;
             block += count;
             continue;
-        } else {
-            println!("error")
+        } else if number_regex.is_match(&word) {
+            tokens.push(Token {
+                line,
+                block,
+                token_type: TokenType::Number(word),
+            });
+            index += count;
+            block += count;
+            continue;
+        }
+        else {
+            println!(
+                "Error while tokenizing in line {} and block {}",
+                line, block
+            );
         }
 
         index += 1;
@@ -662,5 +676,4 @@ Description:
         .to_string()
 }
 
-//TODO: detect numbers
 //TODO: detect characters
