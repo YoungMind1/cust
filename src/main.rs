@@ -3,7 +3,7 @@ pub mod tokens;
 use std::{collections::HashMap, env::args, fs, path::Path, process::ExitCode};
 
 use regex::Regex;
-use tokens::{Keyword, Operator, Delimiter, Token, TokenType};
+use tokens::{Delimiter, Keyword, Operator, Token, TokenType};
 
 fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
@@ -168,14 +168,15 @@ fn main() -> ExitCode {
                 starting_index = 0;
                 block += 2;
                 ending_index = 0;
+                index += 2;
             } else {
                 if *character == '\n' {
                     line += 1;
                 }
                 block += 1;
                 ending_index += 1;
+                index += 1;
             }
-            index += 1;
             continue;
         } else if is_inside_literal {
             if character == &'"' {
@@ -653,4 +654,3 @@ Description:
 
 //TODO: detect numbers
 //TODO: detect characters
-
