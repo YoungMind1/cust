@@ -114,6 +114,8 @@ fn main() -> ExitCode {
 
     let mut starting_index = 0;
     let mut ending_index = 0;
+    let mut starting_line = 0;
+    let mut starting_block = 0;
 
     let mut tokens: Vec<Token> = vec![];
 
@@ -133,7 +135,7 @@ fn main() -> ExitCode {
                 is_inside_linear_comments = false;
                 tokens.push(Token {
                     line,
-                    block,
+                    block: starting_block,
                     token_type: TokenType::Comment(
                         characters
                             .get(starting_index..(starting_index + ending_index))
@@ -144,6 +146,7 @@ fn main() -> ExitCode {
                 });
                 line += 1;
                 block = 1;
+                starting_block = 0;
                 starting_index = 0;
                 ending_index = 0;
             } else {
@@ -156,8 +159,8 @@ fn main() -> ExitCode {
             if character == &'*' && characters.get(index + 1).unwrap() == &'/' {
                 is_inside_block_comments = false;
                 tokens.push(Token {
-                    line,
-                    block,
+                    line: starting_line,
+                    block: starting_block,
                     token_type: TokenType::Comment(
                         characters
                             .get(starting_index..(starting_index + ending_index))
@@ -167,6 +170,8 @@ fn main() -> ExitCode {
                     ),
                 });
                 starting_index = 0;
+                starting_block = 0;
+                starting_line = 0;
                 block += 2;
                 ending_index = 0;
                 index += 2;
@@ -183,8 +188,8 @@ fn main() -> ExitCode {
             if character == &'"' {
                 is_inside_literal = false;
                 tokens.push(Token {
-                    line,
-                    block,
+                    line: starting_line,
+                    block: starting_block,
                     token_type: TokenType::Literal(
                         characters
                             .get(starting_index..(starting_index + ending_index))
@@ -193,6 +198,8 @@ fn main() -> ExitCode {
                             .collect(),
                     ),
                 });
+                starting_block = 0;
+                starting_line = 0;
                 starting_index = 0;
                 block += 1;
                 ending_index = 0;
@@ -220,18 +227,23 @@ fn main() -> ExitCode {
             block += 2;
             is_inside_linear_comments = true;
             starting_index = index;
+            starting_block = block;
             continue;
         } else if character == &'/' && characters.get(index + 1).unwrap() == &'*' {
             index += 2;
             block += 2;
             is_inside_block_comments = true;
             starting_index = index;
+            starting_block = block;
+            starting_line = line;
             continue;
         } else if character == &'"' {
             index += 1;
             block += 1;
             is_inside_literal = true;
             starting_index = index;
+            starting_line = line;
+            starting_block = block;
             continue;
         }
 
