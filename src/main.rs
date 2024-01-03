@@ -8,14 +8,14 @@ use tokens::{Delimiter, Keyword, Operator, Token, TokenType};
 fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
 
-    if args.len() == 1 {
+    if args.len() != 2 {
         println!("{}", help_text());
         return ExitCode::FAILURE;
     }
 
     if args.get(1).unwrap() == "--help" {
         println!("{}", help_text());
-        return ExitCode::FAILURE;
+        return ExitCode::SUCCESS;
     }
 
     let file_path = Path::new(args.get(1).unwrap());
@@ -646,8 +646,7 @@ fn main() -> ExitCode {
             index += count;
             block += count;
             continue;
-        }
-        else {
+        } else {
             println!(
                 "Error while tokenizing in line {} and block {}",
                 line, block
