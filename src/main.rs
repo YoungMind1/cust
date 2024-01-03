@@ -3,6 +3,7 @@ pub mod tokens;
 use std::{collections::HashMap, env::args, fs, path::Path, process::ExitCode};
 
 use regex::Regex;
+use tabled::{builder::Builder, settings::Style};
 use tokens::{Delimiter, Keyword, Operator, Token, TokenType};
 
 fn main() -> ExitCode {
@@ -683,9 +684,72 @@ fn main() -> ExitCode {
         index += 1;
     }
 
+    let mut table = Builder::new();
+    table.push_record(["#", "Type", "Line", "Block", "Content"]);
+    let mut count = 1;
     for token in tokens {
-        println!("{}", token);
+        match token.token_type {
+            TokenType::Identifier(value) => table.push_record([
+                count.to_string(),
+                "Identifier".to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value,
+            ]),
+            TokenType::Comment(value) => table.push_record([
+                count.to_string(),
+                "Comment".to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value,
+            ]),
+            TokenType::Operator(value) => table.push_record([
+                count.to_string(),
+                TokenType::Operator(value).to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value.to_string(),
+            ]),
+            TokenType::Literal(value) => table.push_record([
+                count.to_string(),
+                "Literal".to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value,
+            ]),
+            TokenType::Keyword(value) => table.push_record([
+                count.to_string(),
+                TokenType::Keyword(value).to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value.to_string(),
+            ]),
+            TokenType::Number(value) => table.push_record([
+                count.to_string(),
+                "Number".to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value,
+            ]),
+            TokenType::Delimiter(value) => table.push_record([
+                count.to_string(),
+                TokenType::Delimiter(value).to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value.to_string(),
+            ]),
+            TokenType::Character(value) => table.push_record([
+                count.to_string(),
+                TokenType::Character(value).to_string(),
+                token.line.to_string(),
+                token.block.to_string(),
+                value.to_string(),
+            ]),
+        };
+
+        count += 1;
     }
+    println!("{}", table.build().with(Style::sharp()));
 
     ExitCode::SUCCESS
 }

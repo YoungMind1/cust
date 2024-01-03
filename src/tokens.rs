@@ -1,5 +1,8 @@
 use std::fmt::Display;
 
+use tabled::Tabled;
+
+#[derive(Tabled)]
 pub struct Token {
     pub line: usize,
     pub block: usize,
@@ -80,6 +83,22 @@ pub enum TokenType {
     Character(char),
 }
 
+impl Display for TokenType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self {
+            TokenType::Identifier(_) => write!(f, "Identifier"),
+            TokenType::Comment(_) => write!(f, "Comment"),
+            TokenType::Operator(_) => write!(f, "Operator"),
+            TokenType::Literal(_) => write!(f, "Literal"),
+            TokenType::Keyword(_) => write!(f, "Keyword"),
+            TokenType::Number(_) => write!(f, "Number"),
+            TokenType::Delimiter(_) => write!(f, "Delimiter"),
+            TokenType::Character(_) => write!(f, "Character"),
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
 pub enum Operator {
     // Arithmetic Operators
     Addition,
@@ -162,6 +181,8 @@ impl Display for Operator {
         }
     }
 }
+
+#[derive(Clone, Copy)]
 pub enum Delimiter {
     Comma,
     SemiColon,
