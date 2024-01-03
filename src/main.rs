@@ -585,8 +585,23 @@ fn main() -> ExitCode {
             continue;
         }
 
-        // now find keyword
-        // then find identifier
+        if *character == '\'' {
+            if characters.get(index + 2).unwrap() == &'\'' {
+                tokens.push(Token {
+                    line,
+                    block,
+                    token_type: TokenType::Character(characters.get(index + 1).unwrap().to_owned()),
+                });
+            } else {
+                println!(
+                    "Error while tokenizing in line {} and block {}",
+                    line, block
+                );
+            }
+            block += 1;
+            index += 1;
+            continue;
+        }
 
         let mut count = 0;
         let mut word: String = String::new();
@@ -674,5 +689,3 @@ Description:
     --help display this help text and exit"
         .to_string()
 }
-
-//TODO: detect characters

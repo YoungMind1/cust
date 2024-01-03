@@ -58,6 +58,13 @@ impl Display for Token {
                     delimiter, self.line, self.block
                 )
             }
+            TokenType::Character(char) => {
+                write!(
+                    f,
+                    "Character \"{}\" found in line {} and block {}",
+                    char, self.line, self.block
+                )
+            }
         }
     }
 }
@@ -70,6 +77,7 @@ pub enum TokenType {
     Keyword(Keyword),
     Number(String),
     Delimiter(Delimiter),
+    Character(char),
 }
 
 pub enum Operator {
